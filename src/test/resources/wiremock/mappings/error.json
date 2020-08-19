@@ -1,0 +1,13 @@
+{
+    "request": {
+        "url": "/user/o13ht9jwei81m6uboo72wqkf31gcm7ay",
+        "method": "GET"
+    },
+    "response": {
+        "status": 404,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "bodyFileName": "error.json"
+    }
+}

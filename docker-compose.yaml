@@ -1,0 +1,34 @@
+version: "2.1"
+services:
+  demo-proxy:
+#    image: demo-proxy:v2
+    build:
+      context: .
+    mem_limit: 512m
+    mem_reservation: 512m
+    ports:
+      - "8080:8080"
+    depends_on:
+      - test-backend
+    environment:
+      JAVA_OPTS: -XX:MinRAMPercentage=30.0 -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=40.0 -XX:+UseG1GC -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m -Dio.netty.leakDetectionLevel=paranoid
+      SPRING_APPLICATION_JSON: |
+        {
+        }
+  test-backend:
+    image: "rodolpheche/wiremock"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/__admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    volumes:
+      - ./src/test/resources/wiremock:/home/wiremock
+    command: ["--disable-banner"]
+  perf-test:
+    image: "loadimpact/k6"
+    volumes:
+      - ./perf:/scripts
+    command: run --vus 30 --duration 30s scripts/docker.js
+    depends_on:
+      - demo-proxy
