@@ -34,7 +34,9 @@ class BadFilter(val myClient: WebClient) : GatewayFilter {
 	override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
 		return myClient.get().uri("/user/{userId}", "o13ht9jwei81m6uboo72wqkf31gcm7ay")
 				.retrieve()
-				.toBodilessEntity()
+				.bodyToMono(String::class.java)
+//		return Mono.error<String> { IllegalStateException("My ex") }
+//				.onErrorResume { throwable -> exchange.request.body.map(DataBufferUtils::release).then(Mono.error(throwable)) }
 				.flatMap { Mono.defer { chain.filter(exchange) } }
 	}
 }

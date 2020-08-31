@@ -1,7 +1,7 @@
 version: "2.1"
 services:
   demo-proxy:
-#    image: demo-proxy:v2
+    image: demo-proxy:v2
     build:
       context: .
     mem_limit: 512m
@@ -11,7 +11,7 @@ services:
     depends_on:
       - test-backend
     environment:
-      JAVA_OPTS: -XX:MinRAMPercentage=30.0 -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=40.0 -XX:+UseG1GC -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m -Dio.netty.leakDetectionLevel=paranoid
+      JAVA_OPTS: -XX:MinRAMPercentage=30.0 -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=40.0 -XX:+UseG1GC -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m -Dio.netty.leakDetectionLevel=paranoid -Dio.netty.leakDetection.targetRecords=30
       SPRING_APPLICATION_JSON: |
         {
         }

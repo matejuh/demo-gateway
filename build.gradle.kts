@@ -5,6 +5,8 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.9.RELEASE"
 	kotlin("jvm") version "1.3.72"
 	kotlin("plugin.spring") version "1.3.72"
+	id("com.palantir.docker") version "0.22.1"
+	id("com.avast.gradle.docker-compose") version "0.13.2"
 }
 
 group = "com.gateway"
@@ -43,4 +45,20 @@ tasks.withType<KotlinCompile> {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "11"
 	}
+}
+
+docker {
+	val bootJar = tasks.bootJar.get()
+	dependsOn(bootJar)
+	name =  "demo-gw-test"
+	files(bootJar.outputs.files.singleFile)
+	buildArgs(mapOf(
+			"JAR_FILE" to bootJar.outputs.files.singleFile.name
+	))
+}
+
+dockerCompose {
+	forceRecreate = true
+	captureContainersOutput = true
+	upAdditionalArgs = listOf("--abort-on-container-exit")
 }
