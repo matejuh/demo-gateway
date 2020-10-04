@@ -17,12 +17,13 @@ repositories {
 	mavenCentral()
 }
 
-extra["springCloudVersion"] = "Hoxton.SR6"
+extra["springCloudVersion"] = "Hoxton.SR8"
 
 dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+	implementation("io.projectreactor.netty:reactor-netty:0.9.12.RELEASE")
 	implementation("org.springframework.boot:spring-boot-starter-mustache")
 	implementation("com.samskivert:jmustache")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
